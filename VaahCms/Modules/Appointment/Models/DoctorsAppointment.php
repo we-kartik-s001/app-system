@@ -460,21 +460,21 @@ class DoctorsAppointment extends VaahModel
     public static function getItem($id)
     {
 
-//        $item = DoctorsAppointment::where('doctor_id', Auth::id())
-////            ->with(['createdByUser', 'updatedByUser', 'deletedByUser'])
-//            ->withTrashed()
-//            ->get();
-//
-//        if(!$item)
-//        {
-//            $response['success'] = false;
-//            $response['errors'][] = 'Record not found';
-//            return $response;
-//        }
-//        $response['success'] = true;
-//        $response['data'] = $item;
-//
-//        return $response;
+        $item = DoctorsAppointment::where('doctor_id', $id)
+//            ->with(['createdByUser', 'updatedByUser', 'deletedByUser'])
+            ->withTrashed()
+            ->first();
+
+        if(!$item)
+        {
+            $response['success'] = false;
+            $response['errors'][] = 'Record not found';
+            return $response;
+        }
+        $response['success'] = true;
+        $response['data'] = $item;
+
+        return $response;
 
     }
     //-------------------------------------------------
