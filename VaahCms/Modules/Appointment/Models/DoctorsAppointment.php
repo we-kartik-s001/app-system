@@ -184,7 +184,6 @@ class DoctorsAppointment extends VaahModel
         $item->start_time = $inputs['start_time'];
         $item->end_time = $inputs['end_time'];
         $item->status = $inputs['is_active'];
-        $item->doctor_id = Auth::id();
         $item->save();
 
         $response = self::getItem($item->id);
@@ -460,7 +459,7 @@ class DoctorsAppointment extends VaahModel
     public static function getItem($id)
     {
 
-        $item = DoctorsAppointment::where('doctor_id', $id)
+        $item = DoctorsAppointment::where('id', $id)
 //            ->with(['createdByUser', 'updatedByUser', 'deletedByUser'])
             ->withTrashed()
             ->first();
@@ -468,7 +467,7 @@ class DoctorsAppointment extends VaahModel
         if(!$item)
         {
             $response['success'] = false;
-            $response['errors'][] = 'Record not found';
+            $response['errors'][] = 'Record not found with ID: '.$id;
             return $response;
         }
         $response['success'] = true;
@@ -490,7 +489,7 @@ class DoctorsAppointment extends VaahModel
         // check if name exist
         $item = self::where('id', '!=', $id)
             ->withTrashed()
-            ->where('name', $inputs['name'])->first();
+            ->where('title', $inputs['title'])->first();
 
          if ($item) {
              $error_message = "This name is already exist".($item->deleted_at?' in trash.':'.');
@@ -499,17 +498,17 @@ class DoctorsAppointment extends VaahModel
              return $response;
          }
 
-         // check if slug exist
-         $item = self::where('id', '!=', $id)
-             ->withTrashed()
-             ->where('slug', $inputs['slug'])->first();
-
-         if ($item) {
-             $error_message = "This slug is already exist".($item->deleted_at?' in trash.':'.');
-             $response['success'] = false;
-             $response['errors'][] = $error_message;
-             return $response;
-         }
+//         // check if slug exist
+//         $item = self::where('id', '!=', $id)
+//             ->withTrashed()
+//             ->where('slug', $inputs['slug'])->first();
+//
+//         if ($item) {
+//             $error_message = "This slug is already exist".($item->deleted_at?' in trash.':'.');
+//             $response['success'] = false;
+//             $response['errors'][] = $error_message;
+//             return $response;
+//         }
 
         $item = self::where('id', $id)->withTrashed()->first();
         $item->fill($inputs);
