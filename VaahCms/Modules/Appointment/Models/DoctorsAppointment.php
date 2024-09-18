@@ -283,6 +283,7 @@ class DoctorsAppointment extends VaahModel
         $list->isActiveFilter($request->filter);
         $list->trashedFilter($request->filter);
         $list->searchFilter($request->filter);
+        $list->where('doctor_id',Auth::id());
 
         $rows = config('vaahcms.per_page');
 
@@ -459,21 +460,21 @@ class DoctorsAppointment extends VaahModel
     public static function getItem($id)
     {
 
-        $item = DoctorsAppointment::where('id', $id)
-//            ->with(['createdByUser', 'updatedByUser', 'deletedByUser'])
-            ->withTrashed()
-            ->first();
-
-        if(!$item)
-        {
-            $response['success'] = false;
-            $response['errors'][] = 'Record not found with ID: '.$id;
-            return $response;
-        }
-        $response['success'] = true;
-        $response['data'] = $item;
-
-        return $response;
+//        $item = DoctorsAppointment::where('doctor_id', Auth::id())
+////            ->with(['createdByUser', 'updatedByUser', 'deletedByUser'])
+//            ->withTrashed()
+//            ->get();
+//
+//        if(!$item)
+//        {
+//            $response['success'] = false;
+//            $response['errors'][] = 'Record not found';
+//            return $response;
+//        }
+//        $response['success'] = true;
+//        $response['data'] = $item;
+//
+//        return $response;
 
     }
     //-------------------------------------------------
